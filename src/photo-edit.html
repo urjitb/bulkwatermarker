@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+    crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<ul id="nav-mobile" class="sidenav sidenav-fixed" style="transform: translateX(0%);">
+
+  <li class="bold"><a href="video-edit.html" class="waves-effect waves-teal">Edit Videos <i
+        class="fas fa-video"></i></a></li>
+  <li class="active"><a href="photo-edit.html" class="waves-effect waves-teal">Edit Photos <i
+        class="far fa-image"></i></a></li>
+  <div class="fixedBottom"><img
+        src="http://monoscrini.s3.amazonaws.com/screen/fineproxy_logo_banner2_1.png"></div>
+
+</ul>
+
+<body>
+  <main>
+    <div class="container">
+      <h3 class="header">Bulk Watermark Photos</h3>
+      
+      <div class="container">
+        <p><b>Step 1.</b> Select a folder with photos you want to watermark.</p>
+        <a id="selectInputDir" class="waves-effect waves-light btn">Select Input Folder</a>
+      
+        <p><b>Step 2.</b> Where do you want the watermark to be located?</p>
+        <p>
+          <label>
+            <input name="group1" type="radio" value="top-right" checked />
+            <span>Top Right</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="group1" type="radio" value="top-left" />
+            <span>Top Left</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="group1" type="radio" value="center" />
+            <span>Center</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="group1" type="radio" value="bottom-right" />
+            <span>Bottom Right</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            <input name="group1" type="radio" value="bottom-left" />
+            <span>Bottom Left</span>
+          </label>
+        </p>
+        
+        <p><b>Step 3.</b> Select a watermark image (prefrably transparent png).</p>
+        <a id="selectWmImg" class="waves-effect waves-light btn">Select Watermark Photo</a>
+      
+        <p><b>Step 4.</b> Select a folder you want your watermarked photos to be in. Watermarking will start once this step is done.</p>
+        <a id="selectOutputDir" class="waves-effect waves-light btn">Select Output Folder</a>
+      </div>
+   
+
+    </div>
+  </main>
+  </div>
+
+</body>
+<script src="js/renVideos.js"></script>
+</html>
