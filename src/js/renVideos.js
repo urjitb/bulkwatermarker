@@ -11,7 +11,7 @@ outfolder.onclick = () => {
 var infolder = document.getElementById("selectInputDir");
 infolder.onclick = () => {
 
-  ipcRenderer.send('inputDirectory:button');
+  ipcRenderer.send('inputDirectory:button', "videos");
 }
 
 var watermark = document.getElementById("selectWmImg");

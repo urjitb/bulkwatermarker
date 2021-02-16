@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, webContents } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const jimp = require('jimp')
+const Jimp = require('jimp')
 const ffbinaries = require('ffbinaries');
 const ffmpeg = require('fluent-ffmpeg')
 
@@ -46,11 +46,13 @@ app.on('activate', () => {
 });
 
 let outputDir = __dirname
-const imgpatt = /\.(jpe?g|png|bmp)$/i
-const videopatt = /\.(mp4|avi|flv|gif|ogg|webm)$/i
+
 let watermarkImg = ''
 let mediaContainer = []
-
+var mediaExtensions = {
+  "photos": /\.(jpe?g|png|bmp)$/i,
+  "videos": /\.(mp4|avi|flv|gif|ogg|webm)$/i
+}
 const locationOverlay = {
   "top-right": "-filter_complex overlay=main_w-overlay_w-5:5",
   "top-left": "-filter_complex overlay=5:5",
@@ -60,7 +62,7 @@ const locationOverlay = {
 }
 
 function watermarkProcess(folderPath, wmLocation, mediaType) {
-  console.log("in watermarkProcess "+ mediaType)
+  console.log("in watermarkProcess " + mediaType)
   console.log(mediaContainer)
   mediaContainer.forEach(file => {
     //console.log(file)
@@ -81,28 +83,53 @@ function watermarkProcess(folderPath, wmLocation, mediaType) {
         })
         .on("end", function (commandLine) {
           mainWindow.webContents.send('asynchronous-message', { html: 'Finished processing ' + path.basename(file) });
-          
+
           console.log('Spawned Ffmpeg with command: ' + commandLine);
         })
         .run()
+    }
+    else {
+      console.log(watermarkImg)
+      const main = async () => {
+        const [image, logo] = await Promise.all([
+          Jimp.read(file),
+          Jimp.read(watermarkImg[0])
+        ]);
 
+        logo.resize(image.bitmap.width / 10, Jimp.AUTO);
 
-        
+        const locations = {
+          "top-left": { x: 5, y: 5 },
+          "top-right": { x: (image.bitmap.width - 5) - logo.bitmap.width, y: 5 },
+          "center": { x: (image.bitmap.width / 2) - (logo.bitmap.width / 2), y: (image.bitmap.height / 2) - (logo.bitmap.height / 2) },
+          "bottom-left": { x: 5, y: image.bitmap.width - 5 },
+          "bottom-right": { x: (image.bitmap.width - 5) - logo.bitmap.width, y: (image.bitmap.height - 5) - logo.bitmap.height }
+        }
+        return image.composite(logo, locations[wmLocation].x, locations[wmLocation].y, [
+          {
+            mode: Jimp.BLEND_SCREEN,
+            opacitySource: 0.1,
+            opacityDest: 1
+          }
+        ]);
+      };
+
+      main().then(image => image.write(folderPath[0] + '/' + path.basename(file))).catch((error)=>console.log(error));
 
 
     }
+
+
   })
 }
 
-function storeInputFiles(files) {
 
+function storeInputFiles(files,extPatt) {
   files.forEach((folder) => {
     fs.readdir(folder, (err, files) => {
       files.forEach(file => {
-        if (videopatt.test(file)) {
+        if (extPatt.test(file)) {
           mediaContainer.push(path.join(folder, file))
-
-
         }
       });
 
@@ -111,7 +138,9 @@ function storeInputFiles(files) {
 }
 
 //1
-ipcMain.on('inputDirectory:button', function () {
+ipcMain.on('inputDirectory:button', function (e, mediaType) {
+
+
   mediaContainer = []
   dialog.showOpenDialog({
     properties: ['openDirectory']
@@ -119,7 +148,7 @@ ipcMain.on('inputDirectory:button', function () {
 
     if (!result.canceled) {
 
-      storeInputFiles(result.filePaths)
+      storeInputFiles(result.filePaths,mediaExtensions[mediaType])
     }
   }).catch(err => {
     console.log(err)
@@ -127,8 +156,8 @@ ipcMain.on('inputDirectory:button', function () {
 });
 
 //2
-ipcMain.on('inputImg:button', function () {
-
+ipcMain.on('inputImg:button', function (e, mediaType) {
+ 
   dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
@@ -139,6 +168,7 @@ ipcMain.on('inputImg:button', function () {
     if (!result.canceled) {
       watermarkImg = result.filePaths
     }
+    console.log(watermarkImg)
   }).catch(err => {
     console.log(err)
   })
@@ -146,7 +176,7 @@ ipcMain.on('inputImg:button', function () {
 
 //3
 ipcMain.on('outputDirectory:button', function (e, wmLocation, mediaType) {
-
+  console.log("triggered")
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }).then(result => {

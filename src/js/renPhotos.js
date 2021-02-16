@@ -7,10 +7,11 @@ outfolder.onclick = () => {
   ipcRenderer.send('outputDirectory:button', wmLocation, "photos");
 }
 
+
 var infolder = document.getElementById("selectInputDir");
 infolder.onclick = () => {
 
-  ipcRenderer.send('inputDirectory:button');
+  ipcRenderer.send('inputDirectory:button', "photos");
 }
 
 var watermark = document.getElementById("selectWmImg");
@@ -18,6 +19,10 @@ watermark.onclick = () => {
 
   ipcRenderer.send('inputImg:button');
 }
+
+ipcRenderer.on('asynchronous-message',(e,data)=>{
+  M.toast(data)
+});
 
 $(document).ready(function () {
   $("input[type='radio']").click(function () {
