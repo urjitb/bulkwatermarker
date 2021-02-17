@@ -1,4 +1,5 @@
-ff*
+./ffmpeg
+./ffprobe
 
 # Logs
 logs
