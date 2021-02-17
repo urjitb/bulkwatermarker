@@ -45,10 +45,13 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "electron-squirrel-startup": "^1.0.0",
     "ffbinaries": "^1.1.4",
     "fluent-ffmpeg": "^2.1.2",
-    "jimp": "^0.16.1"
+    "jimp": "^0.16.1",
+    "jquery": "^3.5.1",
+    "materialize-css": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",

@@ -18,8 +18,8 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    width: 600,
+    height: 1000,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -65,10 +65,6 @@ function watermarkProcess(folderPath, wmLocation, mediaType) {
   console.log("in watermarkProcess " + mediaType)
   console.log(mediaContainer)
   mediaContainer.forEach(file => {
-    //console.log(file)
-    //console.log(file + " processed with -> " + wmLocation + watermarkImg + folderPath[0]);
-    //console.log(watermarkImg)
-    //console.log(folderPath[0] + '/' + path.basename(file))
     if (mediaType === "videos") {
       console.log("Matched-----")
       ffmpeg()
@@ -105,6 +101,7 @@ function watermarkProcess(folderPath, wmLocation, mediaType) {
           "bottom-left": { x: 5, y: image.bitmap.width - 5 },
           "bottom-right": { x: (image.bitmap.width - 5) - logo.bitmap.width, y: (image.bitmap.height - 5) - logo.bitmap.height }
         }
+        mainWindow.webContents.send('asynchronous-message', { html: 'Started processing ' + path.basename(file) });
         return image.composite(logo, locations[wmLocation].x, locations[wmLocation].y, [
           {
             mode: Jimp.BLEND_SCREEN,
@@ -114,17 +111,18 @@ function watermarkProcess(folderPath, wmLocation, mediaType) {
         ]);
       };
 
-      main().then(image => image.write(folderPath[0] + '/' + path.basename(file))).catch((error)=>console.log(error));
-
-
+      main().then(
+        image => {
+          image.write(folderPath[0] + '/' + path.basename(file))
+          mainWindow.webContents.send('asynchronous-message', { html: 'Finished processing ' + path.basename(file) });
+        }
+      ).catch((error) => console.log(error));
     }
-
-
   })
 }
 
 
-function storeInputFiles(files,extPatt) {
+function storeInputFiles(files, extPatt) {
   files.forEach((folder) => {
     fs.readdir(folder, (err, files) => {
       files.forEach(file => {
@@ -148,7 +146,7 @@ ipcMain.on('inputDirectory:button', function (e, mediaType) {
 
     if (!result.canceled) {
 
-      storeInputFiles(result.filePaths,mediaExtensions[mediaType])
+      storeInputFiles(result.filePaths, mediaExtensions[mediaType])
     }
   }).catch(err => {
     console.log(err)
@@ -157,7 +155,7 @@ ipcMain.on('inputDirectory:button', function (e, mediaType) {
 
 //2
 ipcMain.on('inputImg:button', function (e, mediaType) {
- 
+
   dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [

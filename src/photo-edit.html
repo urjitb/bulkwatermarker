@@ -3,20 +3,16 @@
 
 <head>
   <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+  <script src="../node_modules/materialize-css/dist/js/materialize.js"></script>
 
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    crossorigin="anonymous" />
 
 
   <meta charset="UTF-8">
-  <title>Hello World!</title>
+  <title>Photos</title>
   <link rel="stylesheet" href="index.css">
 </head>
 <ul id="nav-mobile" class="sidenav sidenav-fixed" style="transform: translateX(0%);">
@@ -25,8 +21,7 @@
         class="fas fa-video"></i></a></li>
   <li class="active"><a href="photo-edit.html" class="waves-effect waves-teal">Edit Photos <i
         class="far fa-image"></i></a></li>
-  <div class="fixedBottom"><img
-        src="http://monoscrini.s3.amazonaws.com/screen/fineproxy_logo_banner2_1.png"></div>
+  <div class="fixedBottom logo"> <a href="https://urjit.me/"><img src="../images/MoreToolsU.png"></a></div>
 
 </ul>
 
@@ -34,11 +29,11 @@
   <main>
     <div class="container">
       <h3 class="header">Bulk Watermark Photos</h3>
-      
+
       <div class="container">
         <p><b>Step 1.</b> Select a folder with photos you want to watermark.</p>
         <a id="selectInputDir" class="waves-effect waves-light btn">Select Input Folder</a>
-      
+
         <p><b>Step 2.</b> Where do you want the watermark to be located?</p>
         <p>
           <label>
@@ -70,14 +65,15 @@
             <span>Bottom Left</span>
           </label>
         </p>
-        
+
         <p><b>Step 3.</b> Select a watermark image (prefrably transparent png).</p>
         <a id="selectWmImg" class="waves-effect waves-light btn">Select Watermark Photo</a>
-      
-        <p><b>Step 4.</b> Select a folder you want your watermarked photos to be in. Watermarking will start once this step is done.</p>
+
+        <p><b>Step 4.</b> Select a folder you want your watermarked photos to be in. Watermarking will start once this
+          step is done.</p>
         <a id="selectOutputDir" class="waves-effect waves-light btn">Select Output Folder</a>
       </div>
-   
+
 
     </div>
   </main>
@@ -85,4 +81,5 @@
 
 </body>
 <script src="js/renPhotos.js"></script>
+
 </html>

@@ -19,3 +19,7 @@ header, main, footer {
   color: #ee6e73;
   font-weight: 300;
 }
+
+.logo {
+  background-color: #FF1616;
+}
